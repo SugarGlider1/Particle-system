@@ -155,6 +155,7 @@ namespace WindowsFormsApp6
     
    public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
    {
+      int counter = 0; // переменная для счета частиц
       
    public void CounterParticle(Particle particle) 
    {
@@ -165,6 +166,7 @@ namespace WindowsFormsApp6
       if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
       {
          particle.Life = 0;
+         counter++; // растет при смерти точки
       } 
    }
       
@@ -177,6 +179,19 @@ namespace WindowsFormsApp6
                    Radius,
                    Radius
                );
+      
+       var stringFormat = new StringFormat(); // создаем экземпляр класса
+            stringFormat.Alignment = StringAlignment.Center; // выравнивание по горизонтали
+            stringFormat.LineAlignment = StringAlignment.Center; // выравнивание по вертикали
+
+            g.DrawString(
+                $"{counter}", // а тут будет показыаться наш счетчик
+                new Font("Verdana", 10),
+                new SolidBrush(Color.White),
+                X,
+                Y,
+                stringFormat // передаем инфу о выравнивании
+            );
    }  
       
    }
