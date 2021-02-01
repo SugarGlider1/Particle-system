@@ -142,6 +142,27 @@ namespace WindowsFormsApp6
                );
         }
     }
+    
+   public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
+   {
+      
+   public void CounterParticle(Particle particle) 
+   {
+      
+   }
+      
+   public virtual void Render(Graphics g) 
+   {
+       g.DrawEllipse(
+                   new Pen(pColor),
+                   X - Radius / 2,
+                   Y - Radius / 2,
+                   Radius,
+                   Radius
+               );
+   }  
+      
+   }
 
     public class TopEmitter : Emitter
     {
