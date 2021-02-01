@@ -176,5 +176,18 @@ namespace WindowsFormsApp6
             // установка цвета формы
             mPoint.pColor = colorDialog.Color;
         }
+        
+        private void picDisplay_MouseClick(object sender, MouseEventArgs e)
+        {
+            CounterPoint = new CounterPoint
+            {
+                X = e.X,
+                Y = e.Y,
+                Radius = 100,
+                pColor = Color.Blue
+            };
+
+            emitter.counterPoints.Add(CounterPoint);
+        }
     }
 }
