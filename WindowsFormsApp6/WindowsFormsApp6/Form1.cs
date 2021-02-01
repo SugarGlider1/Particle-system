@@ -14,6 +14,7 @@ namespace WindowsFormsApp6
         ColorPoint yPoint; // Желтенькая тчк
         ColorPoint gPoint; // Зелененькая тчк
         ColorPoint mPoint; // Маджента тчк
+        CounterPoint CounterPoint; // точка счетчик
 
         public Form1()
         {
@@ -40,6 +41,13 @@ namespace WindowsFormsApp6
                 Radius = 100,
                 pColor = Color.Yellow
             };
+             CounterPoint = new CounterPoint
+            {
+                X = picDisplay.Width / 2,
+                Y = picDisplay.Height / 2,
+                Radius = 100,
+                pColor = Color.Blue
+            };
             gPoint = new ColorPoint
             {
                 X = picDisplay.Width / 2 + 128,
@@ -60,6 +68,7 @@ namespace WindowsFormsApp6
             emitter.colorPoints.Add(yPoint);
             emitter.colorPoints.Add(gPoint);
             emitter.colorPoints.Add(mPoint);
+            emitter.counterPoints.Add(CounterPoint);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -166,6 +175,19 @@ namespace WindowsFormsApp6
                 return;
             // установка цвета формы
             mPoint.pColor = colorDialog.Color;
+        }
+        
+        private void picDisplay_MouseClick(object sender, MouseEventArgs e)
+        {
+            CounterPoint = new CounterPoint
+            {
+                X = e.X,
+                Y = e.Y,
+                Radius = 100,
+                pColor = Color.Blue
+            };
+
+            emitter.counterPoints.Add(CounterPoint);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace WindowsFormsApp6
         public int LifeMin = 20; // минимальное время жизни частицы
         public int LifeMax = 100; // максимальное время жизни частицы
 
-
+        public List<CounterPoint> counterPoints = new List<CounterPoint>(); // добавил список для точек счетчиков
         public List<ColorPoint> colorPoints = new List<ColorPoint>();
         public List<ParticleColorful> particles = new List<ParticleColorful>();
         public float GravitationX = 0;
@@ -43,6 +43,11 @@ namespace WindowsFormsApp6
                     foreach (var point in colorPoints)
                     {
                         point.ColorParticle(particle);
+                    }
+                   
+                   foreach (var point in counterPoints)
+                    {
+                        point.CounterParticle(particle);
                     }
 
                     
@@ -82,6 +87,11 @@ namespace WindowsFormsApp6
             {
                 point.Render(g);
             }
+           
+            foreach (var point in counterPoints)
+            {
+                point.Render(g);
+            }
         }
         public virtual void ResetParticle(ParticleColorful particle)
         {
@@ -104,15 +114,17 @@ namespace WindowsFormsApp6
         }
        
     }
-    public class ColorPoint
+        public abstract class IImpactPoint
     {
         public float X; // ну точка же, вот и две координаты
         public float Y;
-
         public int Radius; // Радиус нашей тчк
         public Color pColor; //Цвет нашей красящей тчк
-        
 
+       
+    }
+    public class ColorPoint : IImpactPoint
+    {
         
         public void ColorParticle(ParticleColorful particle)
         {
@@ -140,6 +152,49 @@ namespace WindowsFormsApp6
                );
         }
     }
+    
+   public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
+   {
+      int counter = 0; // переменная для счета частиц
+      
+   public void CounterParticle(Particle particle) 
+   {
+      float gX = X - particle.X;
+      float gY = Y - particle.Y;
+
+      double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
+      if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
+      {
+         particle.Life = 0;
+         counter++; // растет при смерти точки
+      } 
+   }
+      
+   public virtual void Render(Graphics g) 
+   {
+       g.DrawEllipse(
+                   new Pen(pColor),
+                   X - Radius / 2,
+                   Y - Radius / 2,
+                   Radius,
+                   Radius
+               );
+      
+       var stringFormat = new StringFormat(); // создаем экземпляр класса
+            stringFormat.Alignment = StringAlignment.Center; // выравнивание по горизонтали
+            stringFormat.LineAlignment = StringAlignment.Center; // выравнивание по вертикали
+
+            g.DrawString(
+                $"{counter}", // а тут будет показыаться наш счетчик
+                new Font("Verdana", 10),
+                new SolidBrush(Color.White),
+                X,
+                Y,
+                stringFormat // передаем инфу о выравнивании
+            );
+   }  
+      
+   }
 
     public class TopEmitter : Emitter
     {
