@@ -17,7 +17,7 @@ namespace WindowsFormsApp6
         public int LifeMin = 20; // минимальное время жизни частицы
         public int LifeMax = 100; // максимальное время жизни частицы
 
-
+        public List<CounterPoint> counterPoints = new List<CounterPoint>(); // добавил список для точек счетчиков
         public List<ColorPoint> colorPoints = new List<ColorPoint>();
         public List<ParticleColorful> particles = new List<ParticleColorful>();
         public float GravitationX = 0;
@@ -43,6 +43,11 @@ namespace WindowsFormsApp6
                     foreach (var point in colorPoints)
                     {
                         point.ColorParticle(particle);
+                    }
+                   
+                   foreach (var point in counterPoints)
+                    {
+                        point.CounterParticle(particle);
                     }
 
                     
@@ -79,6 +84,11 @@ namespace WindowsFormsApp6
             }
 
             foreach (var point in colorPoints)
+            {
+                point.Render(g);
+            }
+           
+            foreach (var point in counterPoints)
             {
                 point.Render(g);
             }
@@ -148,7 +158,14 @@ namespace WindowsFormsApp6
       
    public void CounterParticle(Particle particle) 
    {
-      
+      float gX = X - particle.X;
+      float gY = Y - particle.Y;
+
+      double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
+      if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
+      {
+         particle.Life = 0;
+      } 
    }
       
    public virtual void Render(Graphics g) 
