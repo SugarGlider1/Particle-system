@@ -84,6 +84,7 @@
             this.picDisplay.Size = new System.Drawing.Size(776, 400);
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
+            this.picDisplay.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseClick);
             // 
             // timer1
             // 
