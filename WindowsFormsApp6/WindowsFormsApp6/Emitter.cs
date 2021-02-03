@@ -17,8 +17,7 @@ namespace WindowsFormsApp6
         public int LifeMin = 20; // минимальное время жизни частицы
         public int LifeMax = 100; // максимальное время жизни частицы
 
-        public List<CounterPoint> counterPoints = new List<CounterPoint>(); // добавил список для точек счетчиков
-        public List<ColorPoint> colorPoints = new List<ColorPoint>();
+        public List<IImpactPoint> impactPoints = new List<IImpactPoint>();// вернул список
         public List<ParticleColorful> particles = new List<ParticleColorful>();
         public float GravitationX = 0;
         public float GravitationY = 1;
@@ -40,14 +39,9 @@ namespace WindowsFormsApp6
                 }
                 else
                 {
-                    foreach (var point in colorPoints)
+                    foreach (var point in impactPoints)
                     {
-                        point.ColorParticle(particle);
-                    }
-                   
-                   foreach (var point in counterPoints)
-                    {
-                        point.CounterParticle(particle);
+                        point.ImpactParticle(particle);
                     }
 
                     
@@ -83,12 +77,7 @@ namespace WindowsFormsApp6
                 particle.Draw(g);
             }
 
-            foreach (var point in colorPoints)
-            {
-                point.Render(g);
-            }
-           
-            foreach (var point in counterPoints)
+            foreach (var point in impactPoints)
             {
                 point.Render(g);
             }
