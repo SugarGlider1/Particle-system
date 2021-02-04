@@ -16,15 +16,17 @@ namespace WindowsFormsApp6
         public int RadiusMax = 10; // максимальный радиус частицы
         public int LifeMin = 20; // минимальное время жизни частицы
         public int LifeMax = 100; // максимальное время жизни частицы
-
+        public int ParticlesPerTick = 1;
         public List<IImpactPoint> impactPoints = new List<IImpactPoint>();// вернул список
         public List<ParticleColorful> particles = new List<ParticleColorful>();
         public float GravitationX = 0;
         public float GravitationY = 1;
-        public int ParticlesCount = 1000;
+         public Color ColorFrom = Color.White; // начальный цвет частицы
+        public Color ColorTo = Color.FromArgb(100, Color.Black); // конечный цвет частиц
 
         public void UpdateState()
         {
+           int particlesToCreate = ParticlesPerTick;
 
             foreach (var particle in particles)
             {
@@ -33,9 +35,14 @@ namespace WindowsFormsApp6
 
                 particle.Life -= 1; // уменьшаю здоровье
                                     // если здоровье кончилось
-                if (particle.Life < 0)
+                if (particle.Life <= 0)
                 {
-                    ResetParticle(particle);
+                    if (particlesToCreate > 0)
+                    {
+                        /* у нас как сброс частицы равносилен созданию частицы */
+                        particlesToCreate -= 1; // поэтому уменьшаем счётчик созданных частиц на 1
+                        ResetParticle(particle);
+                    }
                 }
                 else
                 {
@@ -51,24 +58,23 @@ namespace WindowsFormsApp6
                 }
             }
 
-            for (var i = 0; i < 10; ++i)
+            while (particlesToCreate >= 1)
             {
-                if (particles.Count < ParticlesCount)
-                {
-
-                    var particle = new ParticleColorful();
-                    particle.FromColor = Color.White;
-                    particle.ToColor = Color.FromArgb(0, Color.Wheat);
-
-                    ResetParticle(particle); 
-
-                    particles.Add(particle);
-                }
-                else
-                {
-                    break;
-                }
+                particlesToCreate -= 1;
+                var particle = CreateParticle();
+                ResetParticle((ParticleColorful)particle);
+                particles.Add((ParticleColorful)particle);
             }
+           
+           public virtual Particle CreateParticle()
+        {
+            var particle = new ParticleColorful();
+            particle.FromColor = ColorFrom;
+            particle.ToColor = ColorTo;
+
+            return particle;
+        }
+           
         }
         public void Render(Graphics g)
         {
