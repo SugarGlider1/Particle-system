@@ -56,6 +56,9 @@ namespace WindowsFormsApp6
         public override void Draw(Graphics g)
         {
             float k = Math.Min(1f, Life / 100);
+            
+            if (k < 0) k = 0;// если жизнь выходит за рамки допустимых значений
+            if (k > 1) k = 1;// то мы приводим к к допустимому значению
 
             // так как k уменьшается от 1 до 0, то порядок цветов обратный
             var color = MixColor(ToColor, FromColor, k);
