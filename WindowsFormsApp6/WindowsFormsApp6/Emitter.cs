@@ -109,13 +109,25 @@ namespace WindowsFormsApp6
         public float Y;
         public int Radius; // Радиус нашей тчк
         public Color pColor; //Цвет нашей красящей тчк
+           
+        public abstract void ImpactParticle(ParticleColorful particle);
 
-       
+       public virtual void Render(Graphics g)
+        {
+            g.DrawEllipse(
+                   new Pen(pColor),
+                   X - Radius / 2,
+                   Y - Radius / 2,
+                   Radius,
+                   Radius
+               );
+
+        }
     }
     public class ColorPoint : IImpactPoint
     {
         
-        public void ColorParticle(ParticleColorful particle)
+        public override void ImpactParticle(ParticleColorful particle)
         {
             float gX = X - particle.X;
             float gY = Y - particle.Y;
@@ -130,7 +142,7 @@ namespace WindowsFormsApp6
         }
 
         // базовый класс для отрисовки точечки
-        public virtual void Render(Graphics g)
+        public override void Render(Graphics g)
         {
             g.DrawEllipse(
                    new Pen(pColor),
@@ -144,9 +156,9 @@ namespace WindowsFormsApp6
     
    public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
    {
-      int counter = 0; // переменная для счета частиц
+      public int counter; // переменная для счета частиц
       
-   public void CounterParticle(Particle particle) 
+   public override void ImpactParticle(ParticleColorful particle) 
    {
       float gX = X - particle.X;
       float gY = Y - particle.Y;
@@ -159,7 +171,7 @@ namespace WindowsFormsApp6
       } 
    }
       
-   public virtual void Render(Graphics g) 
+   public override void Render(Graphics g) 
    {
        g.DrawEllipse(
                    new Pen(pColor),
