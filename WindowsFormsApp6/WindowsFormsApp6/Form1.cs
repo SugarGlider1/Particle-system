@@ -34,6 +34,7 @@ namespace WindowsFormsApp6
                 Radius = 100, // R тчк
                 pColor = Color.Red // Окрашивающий цвет тчк (также - цвет границ тчк)
             };
+            
             yPoint = new ColorPoint
             {
                 X = picDisplay.Width / 2 - 128,
@@ -41,13 +42,15 @@ namespace WindowsFormsApp6
                 Radius = 100,
                 pColor = Color.Yellow
             };
-             CounterPoint = new CounterPoint
+            
+            CounterPoint = new CounterPoint
             {
                 X = picDisplay.Width / 2,
                 Y = picDisplay.Height / 2,
                 Radius = 100,
                 pColor = Color.Blue
             };
+            
             gPoint = new ColorPoint
             {
                 X = picDisplay.Width / 2 + 128,
@@ -55,6 +58,7 @@ namespace WindowsFormsApp6
                 Radius = 100,
                 pColor = Color.Green
             };
+            
             mPoint = new ColorPoint
             {
                 X = picDisplay.Width / 2 + 256,
@@ -188,6 +192,11 @@ namespace WindowsFormsApp6
             };
 
             emitter.impactPoints.Add(CounterPoint);
+        }
+        
+        private void Generation_rate_Scroll(object sender, EventArgs e)
+        {
+            emitter.ParticlesPerTick = Generation_rate.Value;
         }
     }
 }
