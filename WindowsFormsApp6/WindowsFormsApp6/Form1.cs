@@ -64,11 +64,11 @@ namespace WindowsFormsApp6
             };
 
             // привязываем поля к эмиттеру
-            emitter.colorPoints.Add(rPoint);
-            emitter.colorPoints.Add(yPoint);
-            emitter.colorPoints.Add(gPoint);
-            emitter.colorPoints.Add(mPoint);
-            emitter.counterPoints.Add(CounterPoint);
+            emitter.impactPoints.Add(rPoint);
+            emitter.impactPoints.Add(yPoint);
+            emitter.impactPoints.Add(gPoint);
+            emitter.impactPoints.Add(mPoint);
+            emitter.impactPoints.Add(CounterPoint);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -187,7 +187,7 @@ namespace WindowsFormsApp6
                 pColor = Color.Blue
             };
 
-            emitter.counterPoints.Add(CounterPoint);
+            emitter.impactPoints.Add(CounterPoint);
         }
     }
 }
