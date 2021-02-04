@@ -58,6 +58,8 @@
             this.trackBar7 = new System.Windows.Forms.TrackBar();
             this.trackBar8 = new System.Windows.Forms.TrackBar();
             this.mColorChangeBtn = new System.Windows.Forms.Button();
+            this.Generation_rate = new System.Windows.Forms.TrackBar();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mPointScroller)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rPointScroller)).BeginInit();
@@ -75,6 +77,8 @@
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar8)).BeginInit();
+            this.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Generation_rate)).BeginInit();
             this.SuspendLayout();
             // 
             // picDisplay
@@ -412,11 +416,32 @@
             this.mColorChangeBtn.UseVisualStyleBackColor = true;
             this.mColorChangeBtn.Click += new System.EventHandler(this.mColorChangeBtn_Click);
             // 
+            // Generation_rate
+            // 
+            this.Generation_rate.Location = new System.Drawing.Point(340, 355);
+            this.Generation_rate.Minimum = 1;
+            this.Generation_rate.Name = "Generation_rate";
+            this.Generation_rate.Size = new System.Drawing.Size(128, 45);
+            this.Generation_rate.TabIndex = 13;
+            this.Generation_rate.Value = 1;
+            this.Generation_rate.Scroll += new System.EventHandler(this.Generation_rate_Scroll);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(265, 365);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(80, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Generation rate";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(774, 587);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.Generation_rate);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -448,7 +473,9 @@
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Generation_rate)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -483,6 +510,8 @@
         private System.Windows.Forms.TrackBar trackBar8;
         private System.Windows.Forms.TrackBar trackBar7;
         private System.Windows.Forms.Button mColorChangeBtn;
+        private System.Windows.Forms.TrackBar Generation_rate;
+        private System.Windows.Forms.Label label7;
     }
 }
 
