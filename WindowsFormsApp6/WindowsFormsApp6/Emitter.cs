@@ -4,8 +4,8 @@ using System.Drawing;
 
 namespace WindowsFormsApp6
 {
-   public class Emitter
-   {
+    public class Emitter
+    {
         public int X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
         public int Y; // соответствующая координата Y 
         public int Direction = 0; // вектор направления в градусах куда сыпет эмиттер
@@ -34,14 +34,14 @@ namespace WindowsFormsApp6
                 particle.Y += particle.SpeedY;
 
                 particle.Life -= 1; // уменьшаю здоровье
-                                    // если здоровье кончилось
+                                     // если здоровье кончилось
                 if (particle.Life <= 0)
                 {
                     if (particlesToCreate > 0)
                     {
-                        /* у нас как сброс частицы равносилен созданию частицы */
-                        particlesToCreate -= 1; // поэтому уменьшаем счётчик созданных частиц на 1
-                        ResetParticle(particle);
+                         /* у нас как сброс частицы равносилен созданию частицы */
+                         particlesToCreate -= 1; // поэтому уменьшаем счётчик созданных частиц на 1
+                         ResetParticle(particle);
                     }
                 }
                 else
@@ -163,65 +163,65 @@ namespace WindowsFormsApp6
         }
     }
     
-   public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
-   {
-       public int counter; // переменная для счета частиц
+    public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
+    {
+        public int counter; // переменная для счета частиц
       
-       public override void ImpactParticle(ParticleColorful particle) 
-       {
-           float gX = X - particle.X;
-           float gY = Y - particle.Y;
+        public override void ImpactParticle(ParticleColorful particle) 
+        {
+            float gX = X - particle.X;
+            float gY = Y - particle.Y;
 
-           double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
-           if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
-           {
-               particle.Life = 0;
-               counter++; // растет при смерти точки
-           } 
-       }
+            double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
+            if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
+            {
+                particle.Life = 0;
+                counter++; // растет при смерти точки
+            } 
+        }
       
-       public override void Render(Graphics g) 
-       {
-           g.DrawEllipse(
-                       new Pen(pColor),
-                       X - Radius / 2,
-                       Y - Radius / 2,
-                       Radius,
-                       Radius
-                   );
+        public override void Render(Graphics g) 
+        {
+            g.DrawEllipse(
+                        new Pen(pColor),
+                        X - Radius / 2,
+                        Y - Radius / 2,
+                        Radius,
+                        Radius
+                    );
       
-           var stringFormat = new StringFormat(); // создаем экземпляр класса
-           stringFormat.Alignment = StringAlignment.Center; // выравнивание по горизонтали
-           stringFormat.LineAlignment = StringAlignment.Center; // выравнивание по вертикали
+            var stringFormat = new StringFormat(); // создаем экземпляр класса
+            stringFormat.Alignment = StringAlignment.Center; // выравнивание по горизонтали
+            stringFormat.LineAlignment = StringAlignment.Center; // выравнивание по вертикали
 
-           g.DrawString(
-               $"{counter}", // а тут будет показыаться наш счетчик
-               new Font("Verdana", 10),
-               new SolidBrush(Color.White),
-               X,
-               Y,
-               stringFormat // передаем инфу о выравнивании
-           );
-       }  
+            g.DrawString(
+                $"{counter}", // а тут будет показыаться наш счетчик
+                new Font("Verdana", 10),
+                new SolidBrush(Color.White),
+                X,
+                Y,
+                stringFormat // передаем инфу о выравнивании
+            );
+        }  
       
-   }
+    }
 
-   public class TopEmitter : Emitter
-   {
-       public int Width; // длина экрана
+    public class TopEmitter : Emitter
+    {
+        public int Width; // длина экрана
 
-       public override void ResetParticle(ParticleColorful particle)
-       {
-           base.ResetParticle(particle); // вызываем базовый сброс частицы, там жизнь переопределяется и все такое
+        public override void ResetParticle(ParticleColorful particle)
+        {
+            base.ResetParticle(particle); // вызываем базовый сброс частицы, там жизнь переопределяется и все такое
 
-           // а теперь тут уже подкручиваем параметры движения
-           particle.X = Particle.rand.Next(Width); // позиция X -- произвольная точка от 0 до Width
-           particle.Y = 0;  // ноль -- это верх экрана 
+            // а теперь тут уже подкручиваем параметры движения
+            particle.X = Particle.rand.Next(Width); // позиция X -- произвольная точка от 0 до Width
+            particle.Y = 0;  // ноль -- это верх экрана 
 
-           particle.FromColor = Color.White;
-           particle.ToColor = Color.FromArgb(0, Color.Wheat);
-           particle.SpeedY = 1; // падаем вниз по умолчанию
-           particle.SpeedX = Particle.rand.Next(-2, 2); // разброс влево и вправа у частиц 
-       }
-   }
+            particle.FromColor = Color.White;
+            particle.ToColor = Color.FromArgb(0, Color.Wheat);
+            particle.SpeedY = 1; // падаем вниз по умолчанию
+            particle.SpeedX = Particle.rand.Next(-2, 2); // разброс влево и вправа у частиц 
+        }
+    }
 }
