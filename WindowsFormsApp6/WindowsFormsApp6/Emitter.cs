@@ -5,7 +5,7 @@ using System.Drawing;
 namespace WindowsFormsApp6
 {
    public class Emitter
-    {
+   {
         public int X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
         public int Y; // соответствующая координата Y 
         public int Direction = 0; // вектор направления в градусах куда сыпет эмиттер
@@ -21,12 +21,12 @@ namespace WindowsFormsApp6
         public List<ParticleColorful> particles = new List<ParticleColorful>();
         public float GravitationX = 0;
         public float GravitationY = 1;
-         public Color ColorFrom = Color.White; // начальный цвет частицы
+        public Color ColorFrom = Color.White; // начальный цвет частицы
         public Color ColorTo = Color.FromArgb(100, Color.Black); // конечный цвет частиц
 
         public void UpdateState()
         {
-           int particlesToCreate = ParticlesPerTick;
+            int particlesToCreate = ParticlesPerTick;
 
             foreach (var particle in particles)
             {
@@ -65,17 +65,18 @@ namespace WindowsFormsApp6
                 ResetParticle((ParticleColorful)particle);
                 particles.Add((ParticleColorful)particle);
             }
+        }
            
-           public virtual Particle CreateParticle()
+        public virtual Particle CreateParticle()
         {
             var particle = new ParticleColorful();
             particle.FromColor = ColorFrom;
             particle.ToColor = ColorTo;
 
             return particle;
-        }
            
         }
+      
         public void Render(Graphics g)
         {
             foreach (var particle in particles)
@@ -88,6 +89,7 @@ namespace WindowsFormsApp6
                 point.Render(g);
             }
         }
+      
         public virtual void ResetParticle(ParticleColorful particle)
         {
             particle.Life = Particle.rand.Next(LifeMin, LifeMax);
@@ -109,7 +111,7 @@ namespace WindowsFormsApp6
         }
        
     }
-        public abstract class IImpactPoint
+    public abstract class IImpactPoint
     {
         public float X; // ну точка же, вот и две координаты
         public float Y;
@@ -118,7 +120,7 @@ namespace WindowsFormsApp6
            
         public abstract void ImpactParticle(ParticleColorful particle);
 
-       public virtual void Render(Graphics g)
+        public virtual void Render(Graphics g)
         {
             g.DrawEllipse(
                    new Pen(pColor),
@@ -130,6 +132,7 @@ namespace WindowsFormsApp6
 
         }
     }
+   
     public class ColorPoint : IImpactPoint
     {
         
@@ -162,63 +165,63 @@ namespace WindowsFormsApp6
     
    public class CounterPoint : IImpactPoint // ковый класс для точки счетчика
    {
-      public int counter; // переменная для счета частиц
+       public int counter; // переменная для счета частиц
       
-   public override void ImpactParticle(ParticleColorful particle) 
-   {
-      float gX = X - particle.X;
-      float gY = Y - particle.Y;
+       public override void ImpactParticle(ParticleColorful particle) 
+       {
+           float gX = X - particle.X;
+           float gY = Y - particle.Y;
 
-      double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
-      if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
-      {
-         particle.Life = 0;
-         counter++; // растет при смерти точки
-      } 
+           double r = Math.Sqrt(gX * gX + gY * gY); // считаем расстояние от центра точки до центра частицы
+           if (r + particle.Radius < Radius / 2) // если частица оказалось внутри окружности
+           {
+               particle.Life = 0;
+               counter++; // растет при смерти точки
+           } 
+       }
+      
+       public override void Render(Graphics g) 
+       {
+           g.DrawEllipse(
+                       new Pen(pColor),
+                       X - Radius / 2,
+                       Y - Radius / 2,
+                       Radius,
+                       Radius
+                   );
+      
+           var stringFormat = new StringFormat(); // создаем экземпляр класса
+           stringFormat.Alignment = StringAlignment.Center; // выравнивание по горизонтали
+           stringFormat.LineAlignment = StringAlignment.Center; // выравнивание по вертикали
+
+           g.DrawString(
+               $"{counter}", // а тут будет показыаться наш счетчик
+               new Font("Verdana", 10),
+               new SolidBrush(Color.White),
+               X,
+               Y,
+               stringFormat // передаем инфу о выравнивании
+           );
+       }  
+      
    }
-      
-   public override void Render(Graphics g) 
+
+   public class TopEmitter : Emitter
    {
-       g.DrawEllipse(
-                   new Pen(pColor),
-                   X - Radius / 2,
-                   Y - Radius / 2,
-                   Radius,
-                   Radius
-               );
-      
-       var stringFormat = new StringFormat(); // создаем экземпляр класса
-            stringFormat.Alignment = StringAlignment.Center; // выравнивание по горизонтали
-            stringFormat.LineAlignment = StringAlignment.Center; // выравнивание по вертикали
+       public int Width; // длина экрана
 
-            g.DrawString(
-                $"{counter}", // а тут будет показыаться наш счетчик
-                new Font("Verdana", 10),
-                new SolidBrush(Color.White),
-                X,
-                Y,
-                stringFormat // передаем инфу о выравнивании
-            );
-   }  
-      
+       public override void ResetParticle(ParticleColorful particle)
+       {
+           base.ResetParticle(particle); // вызываем базовый сброс частицы, там жизнь переопределяется и все такое
+
+           // а теперь тут уже подкручиваем параметры движения
+           particle.X = Particle.rand.Next(Width); // позиция X -- произвольная точка от 0 до Width
+           particle.Y = 0;  // ноль -- это верх экрана 
+
+           particle.FromColor = Color.White;
+           particle.ToColor = Color.FromArgb(0, Color.Wheat);
+           particle.SpeedY = 1; // падаем вниз по умолчанию
+           particle.SpeedX = Particle.rand.Next(-2, 2); // разброс влево и вправа у частиц 
+       }
    }
-
-    public class TopEmitter : Emitter
-    {
-        public int Width; // длина экрана
-
-        public override void ResetParticle(ParticleColorful particle)
-        {
-            base.ResetParticle(particle); // вызываем базовый сброс частицы, там жизнь переопределяется и все такое
-
-            // а теперь тут уже подкручиваем параметры движения
-            particle.X = Particle.rand.Next(Width); // позиция X -- произвольная точка от 0 до Width
-            particle.Y = 0;  // ноль -- это верх экрана 
-
-            particle.FromColor = Color.White;
-            particle.ToColor = Color.FromArgb(0, Color.Wheat);
-            particle.SpeedY = 1; // падаем вниз по умолчанию
-            particle.SpeedX = Particle.rand.Next(-2, 2); // разброс влево и вправа у частиц 
-        }
-    }
 }
